@@ -1,0 +1,129 @@
+.af5-mood-search__form fieldset {
+	border: 0;
+	margin: 0;
+	padding: 0;
+}
+
+.af5-mood-search__option {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.35em;
+	margin: 0 1em 0.5em 0;
+	cursor: pointer;
+}
+
+.af5-mood-search__form button[type="submit"] {
+	margin-top: 0.5em;
+}
+
+.af5-mood-search__results {
+	margin-top: 1.5em;
+}
+
+.af5-mood-search__results[aria-busy="true"] {
+	opacity: 0.5;
+}
+
+.af5-mood-search__error,
+.af5-mood-search__empty {
+	color: #6b6b6b;
+}
+
+.af5-mood-search__error {
+	color: #b32d2e;
+}
+
+.af5-mood-search__list {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+	gap: 1.25em;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.af5-mood-search__card {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	border: 1px solid #e2e2e2;
+	border-radius: 8px;
+	overflow: hidden;
+	background: #fff;
+}
+
+/*
+ * !important is needed here: Astra (and other themes) apply a global,
+ * !important-flagged underline to links via their "Global Colors" link
+ * style, which normal specificity can't override.
+ */
+.af5-mood-search .af5-mood-search__card-link,
+.af5-mood-search .af5-mood-search__card-link:hover,
+.af5-mood-search .af5-mood-search__title {
+	color: inherit !important;
+	text-decoration: none !important;
+}
+
+.af5-mood-search__card-link {
+	display: block;
+}
+
+.af5-mood-search__thumb-wrap {
+	aspect-ratio: 16 / 10;
+	overflow: hidden;
+	background: #f2f2f2;
+}
+
+.af5-mood-search__thumb {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.af5-mood-search__title {
+	margin: 0.75em 0.9em 0;
+	font-size: 1.05em;
+	line-height: 1.3;
+}
+
+.af5-mood-search__excerpt {
+	margin: 0.4em 0.9em 0;
+	font-size: 0.9em;
+	color: #5a5a5a;
+	line-height: 1.4;
+}
+
+.af5-mood-search__badges {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.4em;
+	list-style: none;
+	margin: auto 0.9em 0.9em;
+	padding: 0.75em 0 0;
+}
+
+.af5-mood-search__badge {
+	background: #eef2ff;
+	color: #3b3f8f;
+	border-radius: 999px;
+	padding: 0.2em 0.75em;
+	font-size: 0.8em;
+	line-height: 1.6;
+}
+
+@media (prefers-color-scheme: dark) {
+	.af5-mood-search__card {
+		background: #1e1e1e;
+		border-color: #333;
+	}
+
+	.af5-mood-search__excerpt {
+		color: #b7b7b7;
+	}
+
+	.af5-mood-search__badge {
+		background: #2a2d55;
+		color: #cfd3ff;
+	}
+}
