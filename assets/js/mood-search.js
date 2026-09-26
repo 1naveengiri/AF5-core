@@ -1,9 +1,8 @@
 /**
  * AF5 Core – mood search.
  *
- * Debounces checkbox changes and submits the search over AJAX so results
- * refresh without a full page reload, while a normal <form> submit still
- * works if JavaScript is unavailable (server renders results from $_GET).
+ * Re-runs the search over AJAX whenever a filter option is toggled so
+ * results refresh without a full page reload.
  */
 ( function () {
 	'use strict';
@@ -13,7 +12,6 @@
 	}
 
 	var settings      = window.af5MoodSearch;
-	var DEBOUNCE_MS   = 350;
 
 	/**
 	 * @param {HTMLFormElement} form
@@ -22,58 +20,21 @@
 		this.form          = form;
 		this.container     = form.closest( '.af5-mood-search' );
 		this.resultsEl      = this.container.querySelector( '[data-af5-mood-search-results]' );
-		this.debounceTimer  = null;
 		this.abortController = null;
 
-		this.onChange  = this.onChange.bind( this );
-		this.onSubmit  = this.onSubmit.bind( this );
-
-		this.bindEvents();
+		this.form.addEventListener( 'change', this.search.bind( this ) );
 	}
 
-	AF5MoodSearch.prototype.bindEvents = function () {
-		var checkboxes = this.form.querySelectorAll( 'input[type="checkbox"]' );
-		for ( var i = 0; i < checkboxes.length; i++ ) {
-			checkboxes[ i ].addEventListener( 'change', this.onChange );
-		}
-
-		this.form.addEventListener( 'submit', this.onSubmit );
-	};
-
-	AF5MoodSearch.prototype.onChange = function () {
-		var self = this;
-
-		window.clearTimeout( this.debounceTimer );
-		this.debounceTimer = window.setTimeout( function () {
-			self.search( 1 );
-		}, DEBOUNCE_MS );
-	};
-
-	AF5MoodSearch.prototype.onSubmit = function ( event ) {
-		event.preventDefault();
-		window.clearTimeout( this.debounceTimer );
-		this.search( 1 );
-	};
-
-	AF5MoodSearch.prototype.getFormData = function ( page ) {
-		var data    = new window.FormData();
-		var moods   = this.form.querySelectorAll( 'input[name="af5_mood[]"]:checked' );
+	AF5MoodSearch.prototype.getFormData = function () {
+		// Sends the nonce, hidden settings and every checked af5_filter[field][] value.
+		var data = new window.FormData( this.form );
 
 		data.append( 'action', settings.action );
-		data.append( 'nonce', this.form.querySelector( '#af5_mood_search_nonce' ).value );
-		data.append( 'post_type', this.form.querySelector( 'input[name="af5_post_type"]' ).value );
-		data.append( 'field', this.form.querySelector( 'input[name="af5_field"]' ).value );
-		data.append( 'per_page', this.form.querySelector( 'input[name="af5_per_page"]' ).value );
-		data.append( 'paged', page );
-
-		for ( var i = 0; i < moods.length; i++ ) {
-			data.append( 'moods[]', moods[ i ].value );
-		}
 
 		return data;
 	};
 
-	AF5MoodSearch.prototype.search = function ( page ) {
+	AF5MoodSearch.prototype.search = function () {
 		var self = this;
 
 		if ( this.abortController ) {
@@ -87,7 +48,7 @@
 			.fetch( settings.ajaxUrl, {
 				method: 'POST',
 				credentials: 'same-origin',
-				body: this.getFormData( page ),
+				body: this.getFormData(),
 				signal: this.abortController.signal,
 			} )
 			.then( function ( response ) {

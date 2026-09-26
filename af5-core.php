@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       AF5 Core
  * Description:       Custom core functionality for the AF5 project, including a GeoDirectory mood-based listing search shortcode.
- * Version:           1.0.2
+ * Version:           1.0.5
  * Requires PHP:      7.4
  * Author:            BuddyDevelopers
  * Text Domain:       af5-core
@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-define( 'AF5_CORE_VERSION', '1.0.2' );
+define( 'AF5_CORE_VERSION', '1.0.5' );
 define( 'AF5_CORE_PATH', plugin_dir_path( __FILE__ ) );
 define( 'AF5_CORE_URL', plugin_dir_url( __FILE__ ) );
 
